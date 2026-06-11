@@ -4,11 +4,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
 
-nltk.download("punkt", quiet=True)
-nltk.download("punkt_tab", quiet=True)
-nltk.download("stopwords", quiet=True)
-nltk.download("wordnet", quiet=True)
-nltk.download("omw-1.4", quiet=True)
+
 
 stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
@@ -23,7 +19,6 @@ def normalize_text(text: str) -> str:
 
 def preprocess_text(text: str) -> list[str]:
     normalized_text = normalize_text(text)
-
     tokens = nltk.word_tokenize(normalized_text)
 
     processed_tokens = []

@@ -1,14 +1,18 @@
 import pickle
-import ir_datasets
+import sys
 from pathlib import Path
+
 from sklearn.metrics.pairwise import cosine_similarity
 
 
-DATASET_ID = "beir/quora/test"
 TOP_K = 10
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.append(str(PROJECT_ROOT))
+
 ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "tfidf_sample"
+
+from services.document_store_service.document_database import get_document_by_id
 
 
 def load_artifacts():
@@ -24,41 +28,26 @@ def load_artifacts():
     return vectorizer, tfidf_matrix, doc_ids
 
 
-def load_document_texts(doc_ids):
-    dataset = ir_datasets.load(DATASET_ID)
-
-    needed_doc_ids = set(doc_ids)
-    doc_texts = {}
-
-    for doc in dataset.docs_iter():
-        if doc.doc_id in needed_doc_ids:
-            doc_texts[doc.doc_id] = doc.text
-
-        if len(doc_texts) == len(needed_doc_ids):
-            break
-
-    return doc_texts
-
-
 def search(query: str, top_k: int = TOP_K):
     vectorizer, tfidf_matrix, doc_ids = load_artifacts()
 
     query_vector = vectorizer.transform([query])
+
     scores = cosine_similarity(query_vector, tfidf_matrix).flatten()
 
     ranked_indices = scores.argsort()[::-1][:top_k]
-
-    doc_texts = load_document_texts(doc_ids)
 
     results = []
 
     for rank, index in enumerate(ranked_indices, start=1):
         doc_id = doc_ids[index]
+        original_text = get_document_by_id(doc_id)
+
         results.append({
             "rank": rank,
             "doc_id": doc_id,
             "score": scores[index],
-            "text": doc_texts.get(doc_id, "")
+            "text": original_text
         })
 
     return results

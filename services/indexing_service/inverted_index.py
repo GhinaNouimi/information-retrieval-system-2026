@@ -7,8 +7,7 @@ import sys
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.append(str(PROJECT_ROOT))
 
-from services.preprocessing_service.text_preprocessing import preprocess_text
-
+from services.preprocessing_service.document_preprocessing import preprocess_document
 
 def build_inverted_index(raw_documents: dict[str, str]) -> dict[str, list[tuple[str, int]]]:
     """
@@ -31,7 +30,7 @@ def build_inverted_index(raw_documents: dict[str, str]) -> dict[str, list[tuple[
     inverted_index = defaultdict(list)
 
     for doc_id, text in raw_documents.items():
-        tokens = preprocess_text(text)
+        tokens = preprocess_document(text)
         term_frequencies = Counter(tokens)
 
         for term, frequency in term_frequencies.items():
