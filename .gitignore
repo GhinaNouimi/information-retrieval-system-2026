@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+
+.vscode/
+
+artifacts/
+data/
+
+.env
+.venv/
+.ipynb_checkpoints/
+
+*.pkl
+*.npy
+*.npz
