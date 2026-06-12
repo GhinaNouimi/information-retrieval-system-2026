@@ -1,16 +1,16 @@
-from services.retrieval_service.strategies.tfidf_strategy import TfidfRetrievalStrategy
+from services.retrieval_service.strategies.bm25_strategy import BM25RetrievalStrategy
 
 
 if __name__ == "__main__":
     query = "how can I invest in stock market"
 
-    strategy = TfidfRetrievalStrategy()
+    strategy = BM25RetrievalStrategy()
     results = strategy.search(query)
 
     print("Query:")
     print(query)
 
-    print("\nTF-IDF Top Results:")
+    print("\nBM25 Top Results:")
     for result in results:
         print("\nRank:", result["rank"])
         print("Doc ID:", result["doc_id"])

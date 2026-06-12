@@ -1,16 +1,13 @@
-import ir_datasets
 import pickle
-from pathlib import Path
 from itertools import islice
+
+import ir_datasets
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from shared.config import DATASET_ID, SAMPLE_SIZE, TFIDF_SAMPLE_DIR
 
-DATASET_ID = "beir/quora/test"
-SAMPLE_SIZE = 10_000
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-ARTIFACT_DIR = PROJECT_ROOT / "artifacts" / "tfidf_sample"
-ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+TFIDF_SAMPLE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def main():
@@ -37,20 +34,20 @@ def main():
 
     print("Saving artifacts...")
 
-    with open(ARTIFACT_DIR / "tfidf_vectorizer.pkl", "wb") as file:
+    with open(TFIDF_SAMPLE_DIR / "tfidf_vectorizer.pkl", "wb") as file:
         pickle.dump(vectorizer, file)
 
-    with open(ARTIFACT_DIR / "tfidf_matrix.pkl", "wb") as file:
+    with open(TFIDF_SAMPLE_DIR / "tfidf_matrix.pkl", "wb") as file:
         pickle.dump(tfidf_matrix, file)
 
-    with open(ARTIFACT_DIR / "doc_ids.pkl", "wb") as file:
+    with open(TFIDF_SAMPLE_DIR / "doc_ids.pkl", "wb") as file:
         pickle.dump(doc_ids, file)
 
     print("Done.")
     print("Documents indexed:", len(doc_ids))
     print("Vocabulary size:", len(vectorizer.vocabulary_))
     print("TF-IDF matrix shape:", tfidf_matrix.shape)
-    print("Artifacts saved in:", ARTIFACT_DIR)
+    print("Artifacts saved in:", TFIDF_SAMPLE_DIR)
 
 
 if __name__ == "__main__":

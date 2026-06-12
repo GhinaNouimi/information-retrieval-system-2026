@@ -1,11 +1,4 @@
 from collections import defaultdict, Counter
-from pathlib import Path
-import sys
-
-
-# حتى نستطيع استيراد preprocess_text من مجلد preprocessing_service
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.append(str(PROJECT_ROOT))
 
 from services.preprocessing_service.document_preprocessing import preprocess_document
 

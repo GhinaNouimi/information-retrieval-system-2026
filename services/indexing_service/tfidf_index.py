@@ -1,12 +1,22 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from services.preprocessing_service.document_preprocessing import (
+    preprocess_document
+)
+
 
 def build_tfidf_index(documents: dict[str, str]):
     doc_ids = list(documents.keys())
-    doc_texts = list(documents.values())
+
+    processed_documents = []
+
+    for text in documents.values():
+        tokens = preprocess_document(text)
+        processed_documents.append(" ".join(tokens))
 
     vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform(doc_texts)
+
+    tfidf_matrix = vectorizer.fit_transform(processed_documents)
 
     return vectorizer, tfidf_matrix, doc_ids
 

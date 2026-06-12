@@ -1,21 +1,13 @@
-import ir_datasets
 from itertools import islice
-from pathlib import Path
-import sys
 
+import ir_datasets
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.append(str(PROJECT_ROOT))
-
+from shared.config import DATASET_ID, SAMPLE_SIZE
 from services.document_store_service.document_database import (
     create_documents_table,
     insert_document,
     get_document_by_id,
 )
-
-
-DATASET_ID = "beir/quora/test"
-SAMPLE_SIZE = 10_000
 
 
 def main():
@@ -40,7 +32,9 @@ def main():
     print("Total inserted documents:", inserted_count)
 
     print("\nTesting document retrieval from database:")
+
     sample_doc = get_document_by_id("1")
+
     print("Document ID: 1")
     print(sample_doc)
 

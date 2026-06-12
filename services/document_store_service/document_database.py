@@ -1,13 +1,8 @@
 import sqlite3
-from pathlib import Path
+from shared.config import DATABASE_DIR, DATABASE_PATH
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-DATABASE_DIR = PROJECT_ROOT / "artifacts" / "database"
 DATABASE_DIR.mkdir(parents=True, exist_ok=True)
-
-DATABASE_PATH = DATABASE_DIR / "documents_sample.db"
 
 
 def get_connection():
@@ -16,7 +11,6 @@ def get_connection():
 
 def create_documents_table():
     connection = get_connection()
-
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -32,7 +26,6 @@ def create_documents_table():
 
 def insert_document(doc_id: str, text: str):
     connection = get_connection()
-
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -46,7 +39,6 @@ def insert_document(doc_id: str, text: str):
 
 def get_document_by_id(doc_id: str):
     connection = get_connection()
-
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -56,7 +48,6 @@ def get_document_by_id(doc_id: str):
     """, (doc_id,))
 
     result = cursor.fetchone()
-
     connection.close()
 
     if result is None:
@@ -68,10 +59,7 @@ def get_document_by_id(doc_id: str):
 if __name__ == "__main__":
     create_documents_table()
 
-    insert_document(
-        "1",
-        "This is a sample document."
-    )
+    insert_document("1", "This is a sample document.")
 
     document_text = get_document_by_id("1")
 
