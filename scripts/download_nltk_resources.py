@@ -1,9 +1,21 @@
 import nltk
 
-nltk.download("punkt")
-nltk.download("punkt_tab")
-nltk.download("stopwords")
-nltk.download("wordnet")
-nltk.download("omw-1.4")
 
-print("NLTK resources installed successfully.")
+def main():
+    resources = [
+        "punkt",
+        "punkt_tab",
+        "stopwords",
+        "wordnet",
+        "omw-1.4",
+        "averaged_perceptron_tagger_eng",
+    ]
+
+    for resource in resources:
+        nltk.download(resource)
+
+    print("NLTK resources installed successfully.")
+
+
+if __name__ == "__main__":
+    main()
