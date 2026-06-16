@@ -42,10 +42,16 @@ RESULTS = {
         "map":            0.0930,
         "ndcg_at_k":      0.1045,
     },
+    "Embedding\nFull(522K)": {
+        "precision_at_k": 0.1337,
+        "recall":         0.9503,
+        "map":            0.8363,
+        "ndcg_at_k":      0.8755,
+    },
 }
 
+COLORS = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B2", "#E377C2"]
 MODELS   = list(RESULTS.keys())
-COLORS   = ["#4C72B0", "#DD8452", "#55A868", "#C44E52", "#8172B2"]
 METRICS  = {
     "precision_at_k": "Precision@10",
     "recall":         "Recall",
