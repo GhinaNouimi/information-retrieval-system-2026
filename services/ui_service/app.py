@@ -7,15 +7,22 @@ from services.retrieval_service.strategies.hybrid_serial_strategy import HybridS
 from services.retrieval_service.strategies.hybrid_parallel_strategy import HybridParallelRetrievalStrategy
 from services.query_refinement_service.query_expander import refine_query
 from services.retrieval_service.strategies.bm25_full_strategy import BM25FullRetrievalStrategy
-
+from services.retrieval_service.strategies.tfidf_full_v2_strategy import TfidfFullV2RetrievalStrategy
+from services.retrieval_service.strategies.hybrid_parallel_full_strategy import HybridParallelFullRetrievalStrategy
+from services.retrieval_service.strategies.hybrid_serial_full_v2_strategy import HybridSerialFullV2RetrievalStrategy
 print("Loading strategies... please wait.")
 STRATEGIES = {
+
     "BM25 (50K docs)":              BM25LargeRetrievalStrategy(),
-    "BM25 Full (522K docs)": BM25FullRetrievalStrategy(),
-    "Embedding (50K docs)":         EmbeddingRetrievalStrategy(),
-    "Embedding Full (522K docs)":   EmbeddingFullRetrievalStrategy(),
     "Hybrid Serial (50K docs)":     HybridSerialRetrievalStrategy(),
     "Hybrid Parallel (50K docs)":   HybridParallelRetrievalStrategy(),
+    "Embedding (50K docs)":         EmbeddingRetrievalStrategy(),
+    "TF-IDF Full v2 (522K docs)": TfidfFullV2RetrievalStrategy(),
+    "BM25 Full (522K docs)": BM25FullRetrievalStrategy(),
+    "Embedding Full (522K docs)":   EmbeddingFullRetrievalStrategy(),
+    "Hybrid Serial Full (522K docs)":     HybridSerialFullV2RetrievalStrategy(),
+    "Hybrid Parallel Full (522K docs)":   HybridParallelFullRetrievalStrategy(),
+
 }
 print("All strategies loaded.")
 
