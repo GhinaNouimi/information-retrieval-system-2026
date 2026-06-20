@@ -10,6 +10,8 @@ from services.retrieval_service.strategies.tfidf_full_v2_strategy import TfidfFu
 from services.retrieval_service.strategies.hybrid_parallel_full_strategy import HybridParallelFullRetrievalStrategy
 from services.retrieval_service.strategies.hybrid_serial_full_v2_strategy import HybridSerialFullV2RetrievalStrategy
 from services.query_refinement_service.query_expander import refine_query
+from services.clustering_service.clustering_service import ClusteringService
+
 
 print("Loading strategies... please wait.")
 STRATEGIES = {
@@ -25,6 +27,11 @@ STRATEGIES = {
 }
 print("All strategies loaded.")
 
+
+print("Loading clustering service...")
+clustering_service = ClusteringService()
+print("Clustering service loaded.")
+
 # النماذج التي تستخدم BM25
 BM25_MODELS = {
     "BM25 (50K docs)",
@@ -36,7 +43,7 @@ BM25_MODELS = {
 }
 
 
-def search(query: str, model_name: str, use_refinement: bool):
+def search(query: str, model_name: str, use_refinement: bool, use_clustering: bool):
     if not query.strip():
         return "Please enter a query.", ""
 
@@ -54,11 +61,23 @@ def search(query: str, model_name: str, use_refinement: bool):
     results  = strategy.search(final_query)
 
     output = ""
-    for result in results:
-        output += f"**Rank {result['rank']}** — Score: {result['score']:.4f}\n"
-        output += f"Doc ID: {result['doc_id']}\n"
-        output += f"{result['text']}\n"
-        output += "---\n"
+
+    if use_clustering:
+        groups = clustering_service.group_results(results)
+        for group in groups:
+            output += f"## 🗂️ {group['label']} ({len(group['results'])} results)\n\n"
+            for result in group["results"]:
+                output += f"**Rank {result['rank']}** — Score: {result['score']:.4f}\n"
+                output += f"Doc ID: {result['doc_id']}\n"
+                output += f"{result['text']}\n"
+                output += "---\n"
+            output += "\n"
+    else:
+        for result in results:
+            output += f"**Rank {result['rank']}** — Score: {result['score']:.4f}\n"
+            output += f"Doc ID: {result['doc_id']}\n"
+            output += f"{result['text']}\n"
+            output += "---\n"
 
     return output, refined_info
 
@@ -149,6 +168,12 @@ def build_ui():
                     label="Enable Query Refinement",
                     value=False,
                 )
+
+                clustering_toggle = gr.Checkbox(
+                    label="Group results by cluster (K-Means)",
+                    value=False,
+                )
+
                 search_button = gr.Button("Search", variant="primary")
 
         # ====== النتائج ======
@@ -164,7 +189,7 @@ def build_ui():
         # ====== الأحداث ======
         search_button.click(
             fn=search,
-            inputs=[query_input, model_selector, refinement_toggle],
+            inputs=[query_input, model_selector, refinement_toggle, clustering_toggle],
             outputs=[results_output, refinement_output],
         )
 
