@@ -14,10 +14,7 @@ MODEL_NAME = "all-MiniLM-L6-v2"
 
 
 class EmbeddingFullRetrievalStrategy(RetrievalStrategy):
-    """
-    Embedding Retrieval على كامل الـ Dataset (522,931 وثيقة)
-    باستخدام FAISS للبحث السريع.
-    """
+  
 
     def __init__(self):
         self.model, self.index, self.doc_ids = self._load_artifacts()
@@ -36,13 +33,10 @@ class EmbeddingFullRetrievalStrategy(RetrievalStrategy):
         return model, index, doc_ids
 
     def search(self, query: str, top_k: int = TOP_K):
-        # تحويل الـ Query إلى متجه
         query_embedding = self.model.encode([query], convert_to_numpy=True)
 
-        # تطبيع المتجه (ضروري لـ FAISS مع Cosine Similarity)
         faiss.normalize_L2(query_embedding)
 
-        # البحث في FAISS
         scores, indices = self.index.search(query_embedding, top_k)
 
         results = []

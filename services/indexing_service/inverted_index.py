@@ -3,23 +3,7 @@ from collections import defaultdict, Counter
 from services.preprocessing_service.document_preprocessing import preprocess_document
 
 def build_inverted_index(raw_documents: dict[str, str]) -> dict[str, list[tuple[str, int]]]:
-    """
-    Builds an inverted index from raw documents.
-
-    Input:
-        raw_documents = {
-            "Doc1": "Apple apple banana!",
-            "Doc2": "Apple orange."
-        }
-
-    Output:
-        {
-            "apple": [("Doc1", 2), ("Doc2", 1)],
-            "banana": [("Doc1", 1)],
-            "orange": [("Doc2", 1)]
-        }
-    """
-
+  
     inverted_index = defaultdict(list)
 
     for doc_id, text in raw_documents.items():

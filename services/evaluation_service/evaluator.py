@@ -10,18 +10,7 @@ from services.evaluation_service.metrics import (
 
 
 def load_qrels() -> dict:
-    """
-    يقرأ Qrels من Dataset ويُرجعها كـ Dictionary.
-
-    الشكل الناتج:
-    {
-        "query_id_1": {"doc_id_a", "doc_id_b"},
-        "query_id_2": {"doc_id_c"},
-        ...
-    }
-
-    relevance >= 1 تعني أن الوثيقة ذات صلة.
-    """
+   
     dataset = ir_datasets.load(DATASET_ID)
 
     qrels = {}
@@ -36,16 +25,7 @@ def load_qrels() -> dict:
 
 
 def load_queries() -> dict:
-    """
-    يقرأ الـ Queries من Dataset ويُرجعها كـ Dictionary.
-
-    الشكل الناتج:
-    {
-        "query_id_1": "what is machine learning",
-        "query_id_2": "how to invest in stocks",
-        ...
-    }
-    """
+   
     dataset = ir_datasets.load(DATASET_ID)
 
     queries = {}
@@ -57,29 +37,12 @@ def load_queries() -> dict:
 
 
 def evaluate(strategy, top_k: int = TOP_K) -> dict:
-    """
-    يُشغّل التقييم الكامل على Strategy معينة.
-
-    الخطوات:
-    1. يقرأ الـ Queries والـ Qrels من Dataset
-    2. لكل Query تملك Qrels يُشغّل البحث
-    3. يحسب المقاييس الأربعة لكل Query
-    4. يُرجع متوسط كل مقياس
-
-    المعامل strategy:
-    أي كائن يملك دالة search(query, top_k) وتُرجع
-    قائمة من dictionaries تحتوي على مفتاح "doc_id".
-
-    مثال:
-    strategy = TfidfRetrievalStrategy()
-    results  = evaluate(strategy)
-    """
+   
     print("Loading queries and qrels from dataset...")
 
     qrels = load_qrels()
     queries = load_queries()
 
-    # نأخذ فقط الـ Queries التي لها Qrels
     evaluated_query_ids = [
         query_id
         for query_id in queries
@@ -99,11 +62,9 @@ def evaluate(strategy, top_k: int = TOP_K) -> dict:
         query_text = queries[query_id]
         relevant_docs = qrels[query_id]
 
-        # تشغيل البحث
         search_results = strategy.search(query_text, top_k=top_k)
         retrieved_doc_ids = [result["doc_id"] for result in search_results]
 
-        # حساب المقاييس
         p_at_k = precision_at_k(retrieved_doc_ids, relevant_docs, k=top_k)
         r = recall(retrieved_doc_ids, relevant_docs)
         ap = average_precision(retrieved_doc_ids, relevant_docs)

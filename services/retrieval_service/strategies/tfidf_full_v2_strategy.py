@@ -35,25 +35,19 @@ class TfidfFullV2RetrievalStrategy(RetrievalStrategy):
         return vectorizer, tfidf_matrix, doc_ids
 
     def search(self, query: str, top_k: int = TOP_K):
-        # الخطوة 1: تحويل الاستعلام إلى sparse vector
-        # لاحظي: لا يوجد toarray() هنا — يبقى sparse
+      
         query_vector = self.vectorizer.transform([query])
 
-        # الخطوة 2: حساب Cosine Similarity بين الاستعلام وكل الوثائق
-        # sklearn تدعم cosine_similarity على sparse مباشرة
-        # النتيجة: مصفوفة شكلها (1, 522931) تحتوي درجة تشابه كل وثيقة
+      
         similarities = cosine_similarity(query_vector, self.tfidf_matrix).flatten()
 
-        # الخطوة 3: أخذ أعلى top_k درجة
-        # argsort يرتّب من الأصغر للأكبر، لذلك نعكس بـ [::-1]
         top_indices = np.argsort(similarities)[::-1][:top_k]
 
-        # الخطوة 4: بناء النتائج
         results = []
         for rank, idx in enumerate(top_indices, start=1):
             score = float(similarities[idx])
             if score == 0.0:
-                break  # لا داعي لإرجاع نتائج بدون أي تشابه
+                break  
             doc_id = self.doc_ids[idx]
             results.append({
                 "rank":   rank,

@@ -10,7 +10,6 @@ from shared.config import ARTIFACTS_DIR
 CHARTS_DIR = ARTIFACTS_DIR / "charts"
 CHARTS_DIR.mkdir(parents=True, exist_ok=True)
 
-# النتائج التي حصلنا عليها من التقييم
 RESULTS = {
     "TF-IDF\n(10K)": {
         "precision_at_k": 0.0049,
@@ -61,9 +60,7 @@ METRICS  = {
 
 
 def chart_1_grouped_bar():
-    """
-    رسم بياني شريطي مجمّع يقارن كل النماذج في كل المقاييس.
-    """
+   
     x      = np.arange(len(METRICS))
     width  = 0.15
     fig, ax = plt.subplots(figsize=(12, 6))
@@ -97,9 +94,7 @@ def chart_1_grouped_bar():
 
 
 def chart_2_per_metric():
-    """
-    أربعة رسومات منفصلة — رسم لكل مقياس.
-    """
+    
     fig, axes = plt.subplots(2, 2, figsize=(12, 8))
     axes = axes.flatten()
 
@@ -130,9 +125,7 @@ def chart_2_per_metric():
 
 
 def chart_3_radar():
-    """
-    Radar Chart يعرض أداء كل نموذج على شكل مضلع.
-    """
+  
     metric_labels = list(METRICS.values())
     num_metrics   = len(metric_labels)
     angles = np.linspace(0, 2 * np.pi, num_metrics, endpoint=False).tolist()
@@ -160,9 +153,7 @@ def chart_3_radar():
 
 
 def chart_4_sample_size():
-    """
-    رسم يوضح تأثير حجم العينة على أداء BM25.
-    """
+  
     sizes  = ["10K docs\n(TF-IDF)", "10K docs\n(BM25)", "50K docs\n(BM25)"]
     map_v  = [0.0181, 0.0191, 0.0871]
     ndcg_v = [0.0214, 0.0225, 0.0982]

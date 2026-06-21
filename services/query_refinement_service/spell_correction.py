@@ -4,12 +4,7 @@ spell = SpellChecker()
 
 
 def correct_spelling(query: str) -> str:
-    """
-    يصحح الأخطاء الإملائية في الاستعلام.
-
-    مثال:
-    "investng in stokc market" → "investing in stock market"
-    """
+   
     words = query.split()
     corrected_words = []
 

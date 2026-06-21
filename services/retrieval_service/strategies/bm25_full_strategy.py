@@ -12,9 +12,7 @@ BM25_FULL_DIR = ARTIFACTS_DIR / "bm25_full"
 
 
 class BM25FullRetrievalStrategy(RetrievalStrategy):
-    """
-    BM25 Retrieval على كامل الـ Dataset (522,931 وثيقة).
-    """
+  
 
     def __init__(self):
         self.bm25, self.doc_ids = self._load_artifacts()

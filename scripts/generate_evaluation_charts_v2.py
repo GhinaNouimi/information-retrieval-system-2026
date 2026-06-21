@@ -9,9 +9,6 @@ from shared.config import ARTIFACTS_DIR
 CHARTS_DIR = ARTIFACTS_DIR / "charts"
 CHARTS_DIR.mkdir(parents=True, exist_ok=True)
 
-# ===================================================================
-# جميع النتائج — مرتبة من الأضعف للأقوى
-# ===================================================================
 RESULTS = {
     "TF-IDF\n(10K)": {
         "precision_at_k": 0.0049,
@@ -94,7 +91,6 @@ METRICS = {
 
 MODELS = list(RESULTS.keys())
 
-# لون مختلف لكل مجموعة — Sample بألوان فاتحة، Full بألوان داكنة
 GROUP_COLORS = {
     "sample": ["#A8C4E0", "#F4B88A", "#90CFA8", "#E89898", "#B8ACD8"],
     "full":   ["#2166AC", "#D6604D", "#1A7A3A", "#8B0000", "#4A90D9"],
@@ -113,9 +109,6 @@ def _get_colors():
 COLORS = _get_colors()
 
 
-# ===================================================================
-# Chart 1: Grouped Bar — كل النماذج في كل المقاييس
-# ===================================================================
 def chart_1_grouped_bar():
     x     = np.arange(len(METRICS))
     width = 0.08
@@ -152,9 +145,6 @@ def chart_1_grouped_bar():
     print(f"  Saved: {path}")
 
 
-# ===================================================================
-# Chart 2: Per Metric — رسم منفصل لكل مقياس
-# ===================================================================
 def chart_2_per_metric():
     fig, axes = plt.subplots(2, 2, figsize=(16, 10))
     axes = axes.flatten()
@@ -177,7 +167,6 @@ def chart_2_per_metric():
         axes[idx].grid(axis="y", alpha=0.3)
         axes[idx].tick_params(axis="x", labelsize=7)
 
-        # خط فاصل بين Sample و Full
         axes[idx].axvline(x=4.5, color="red", linestyle="--", alpha=0.4, linewidth=1.5)
         axes[idx].text(2.0, max(values) * 1.18, "Sample (50K)", fontsize=8,
                        color="gray", ha="center")
@@ -192,9 +181,6 @@ def chart_2_per_metric():
     print(f"  Saved: {path}")
 
 
-# ===================================================================
-# Chart 3: Radar — نماذج Full فقط (لأن Sample صغيرة جداً تُشوّه الشكل)
-# ===================================================================
 def chart_3_radar():
     full_models = {k: v for k, v in RESULTS.items() if v["group"] == "full"}
     full_colors = GROUP_COLORS["full"]
@@ -228,9 +214,7 @@ def chart_3_radar():
     print(f"  Saved: {path}")
 
 
-# ===================================================================
-# Chart 4: Sample Size Impact — تأثير حجم البيانات على nDCG@10
-# ===================================================================
+
 def chart_4_sample_size():
     """
     يوضح كيف يتحسن الأداء بشكل كبير عند الانتقال من 50K إلى 522K.
@@ -246,8 +230,8 @@ def chart_4_sample_size():
     map_vals  = [0.0181, 0.0871, 0.0971, 0.6134, 0.7154, 0.8363]
     ndcg_vals = [0.0214, 0.0982, 0.1083, 0.6654, 0.7646, 0.8755]
     bar_colors = [
-        "#A8C4E0", "#A8C4E0", "#A8C4E0",   # Sample — فاتح
-        "#2166AC", "#2166AC", "#2166AC",   # Full — داكن
+        "#A8C4E0", "#A8C4E0", "#A8C4E0",  
+        "#2166AC", "#2166AC", "#2166AC",  
     ]
 
     x     = np.arange(len(categories))
@@ -266,7 +250,6 @@ def chart_4_sample_size():
             ha="center", va="bottom", fontsize=8
         )
 
-    # خط فاصل بين Sample و Full
     ax.axvline(x=2.5, color="red", linestyle="--", alpha=0.5, linewidth=1.5)
     ax.text(1.0,  0.85, "Sample\n(10K–50K)", fontsize=10, color="gray", ha="center")
     ax.text(4.0,  0.85, "Full\n(522K)",      fontsize=10, color="#2166AC", ha="center",
@@ -289,13 +272,8 @@ def chart_4_sample_size():
     print(f"  Saved: {path}")
 
 
-# ===================================================================
-# Chart 5: Hybrid vs Base — مقارنة Hybrid مع مكوناته الأساسية
-# ===================================================================
 def chart_5_hybrid_comparison():
-    """
-    يوضح أن Hybrid يجمع قوة BM25 و Embedding معاً.
-    """
+   
     models = [
         "BM25 Full\n(522K)",
         "Embedding Full\n(522K)",
@@ -343,9 +321,7 @@ def chart_5_hybrid_comparison():
     print(f"  Saved: {path}")
 
 
-# ===================================================================
-# Main
-# ===================================================================
+
 def main():
     print("Generating evaluation charts...")
     print()

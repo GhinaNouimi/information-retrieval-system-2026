@@ -15,19 +15,7 @@ DEFAULT_B  = 0.75
 
 
 class BM25FullTunableStrategy(RetrievalStrategy):
-    """
-    BM25 Full مع إمكانية تغيير المعاملات k1 و b من الواجهة.
-
-    k1: يتحكم في تأثير تكرار الكلمة في الوثيقة
-        - قيمة منخفضة (0.5): تكرار الكلمة لا يؤثر كثيراً
-        - قيمة عالية (2.5): تكرار الكلمة يرفع الدرجة أكثر
-        - القيمة الموصى بها: 1.5
-
-    b:  يتحكم في تأثير طول الوثيقة
-        - b=0.0: طول الوثيقة لا يؤثر على الدرجة
-        - b=1.0: تطبيع كامل حسب طول الوثيقة
-        - القيمة الموصى بها: 0.75
-    """
+   
 
     def __init__(self):
         self.corpus_tokens, self.doc_ids = self._load_artifacts()
@@ -47,7 +35,6 @@ class BM25FullTunableStrategy(RetrievalStrategy):
         return corpus_tokens, doc_ids
 
     def _rebuild_if_needed(self, k1: float, b: float):
-        """يعيد بناء BM25 فقط إذا تغيرت المعاملات."""
         if k1 != self._k1 or b != self._b:
             print(f"Rebuilding BM25 with k1={k1}, b={b}...")
             self._bm25 = BM25Okapi(self.corpus_tokens, k1=k1, b=b)
@@ -56,13 +43,11 @@ class BM25FullTunableStrategy(RetrievalStrategy):
             print("Rebuild complete.")
 
     def search(self, query_tokens: list, top_k: int = TOP_K):
-        """البحث بالمعاملات الحالية."""
         return self.search_with_params(query_tokens, top_k=top_k,
                                        k1=self._k1, b=self._b)
 
     def search_with_params(self, query_tokens: list, top_k: int = TOP_K,
                            k1: float = DEFAULT_K1, b: float = DEFAULT_B):
-        """البحث مع تحديد المعاملات مباشرة من الواجهة."""
         self._rebuild_if_needed(k1, b)
         scores         = self._bm25.get_scores(query_tokens)
         ranked_indices = np.argsort(scores)[::-1][:top_k]

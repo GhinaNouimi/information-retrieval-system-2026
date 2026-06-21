@@ -9,14 +9,7 @@ lemmatizer = WordNetLemmatizer()
 
 
 def normalize_text(text: str) -> str:
-    """
-    Applies text normalization.
-
-    Steps:
-    1. Lowercase
-    2. Remove punctuation and special symbols
-    3. Remove extra spaces
-    """
+   
 
     text = text.lower()
     text = re.sub(r"[^a-z0-9\s]", " ", text)
@@ -26,18 +19,7 @@ def normalize_text(text: str) -> str:
 
 
 def preprocess_text(text: str) -> list[str]:
-    """
-    Shared preprocessing pipeline used by both documents and queries.
-
-    Steps:
-    1. Normalize text
-    2. Tokenize
-    3. Remove stopwords
-    4. Lemmatize tokens
-
-    This function is intentionally shared to guarantee that documents
-    and user queries are processed using the same techniques.
-    """
+   
 
     normalized_text = normalize_text(text)
     tokens = nltk.word_tokenize(normalized_text)

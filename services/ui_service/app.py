@@ -32,7 +32,6 @@ print("Loading clustering service...")
 clustering_service = ClusteringService()
 print("Clustering service loaded.")
 
-# النماذج التي تستخدم BM25
 BM25_MODELS = {
     "BM25 (50K docs)",
     "BM25 Full (522K docs)",
@@ -83,10 +82,7 @@ def search(query: str, model_name: str, use_refinement: bool, use_clustering: bo
 
 
 def explain_bm25(query: str, model_name: str):
-    """
-    يشرح تأثير المعاملات على الاستعلام الحالي.
-    يعمل فقط عند اختيار نموذج BM25.
-    """
+   
     if model_name not in BM25_MODELS:
         return "ℹ️ BM25 parameter explanation is only available for BM25 models."
 
@@ -150,14 +146,12 @@ def build_ui():
         gr.Markdown("Search through **522,931 documents** using different retrieval models.")
 
         with gr.Row():
-            # ====== عمود الاستعلام ======
             with gr.Column(scale=3):
                 query_input = gr.Textbox(
                     label="Enter your query",
                     placeholder="e.g. how to invest in stock market",
                     lines=2,
                 )
-            # ====== عمود الإعدادات ======
             with gr.Column(scale=1):
                 model_selector = gr.Dropdown(
                     choices=list(STRATEGIES.keys()),
@@ -176,17 +170,14 @@ def build_ui():
 
                 search_button = gr.Button("Search", variant="primary")
 
-        # ====== النتائج ======
         refinement_output = gr.Markdown(label="Query Refinement Info")
         results_output    = gr.Markdown(label="Search Results")
 
-        # ====== قسم BM25 Parameters ======
         with gr.Accordion("BM25 Parameter Analysis", open=False):
             gr.Markdown("Select a BM25 model and enter a query, then click the button below.")
             explain_button  = gr.Button("Explain BM25 Parameters for This Query")
             bm25_explanation = gr.Markdown()
 
-        # ====== الأحداث ======
         search_button.click(
             fn=search,
             inputs=[query_input, model_selector, refinement_toggle, clustering_toggle],

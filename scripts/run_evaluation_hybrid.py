@@ -39,7 +39,6 @@ def main():
     print("All strategies loaded. Starting evaluation...")
     print()
 
-    # تقييم كل نموذج
     print("Evaluating BM25...")
     bm25_results = evaluate(bm25)
     print_results("BM25", bm25_results)
@@ -56,7 +55,6 @@ def main():
     parallel_results = evaluate(hybrid_parallel)
     print_results("Hybrid Parallel", parallel_results)
 
-    # جدول المقارنة النهائي
     print("=" * 70)
     print("Final Comparison: All Models")
     print("=" * 70)
@@ -77,7 +75,6 @@ def main():
         p = parallel_results[key]
         best = max(b, e, s, p)
 
-        # نضع * بجانب الأفضل
         b_str = f"{b:.4f}{'*' if b == best else ' '}"
         e_str = f"{e:.4f}{'*' if e == best else ' '}"
         s_str = f"{s:.4f}{'*' if s == best else ' '}"

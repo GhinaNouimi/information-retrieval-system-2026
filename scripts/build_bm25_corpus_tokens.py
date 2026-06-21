@@ -1,10 +1,4 @@
-"""
-يحفظ الـ corpus tokens لكل 522,931 وثيقة.
-هذا الملف ضروري لـ BM25FullTunableStrategy التي تتيح
-تغيير معاملات k1 و b من الواجهة بدون إعادة بناء الفهرس من الصفر.
 
-الوقت المتوقع: 15-20 دقيقة
-"""
 import pickle
 import ir_datasets
 
@@ -24,7 +18,6 @@ def main():
     print("=" * 55)
     print()
     print("هذا السكريبت يحفظ الـ tokens فقط بدون بناء index جديد.")
-    print("الوقت المتوقع: 15-20 دقيقة.")
     print()
 
     print("Loading dataset...")
@@ -47,7 +40,6 @@ def main():
     print(f"All {len(doc_ids):,} documents processed.")
     print()
 
-    # حفظ الـ corpus tokens
     print("Saving corpus tokens...")
     tokens_path = BM25_FULL_DIR / "bm25_corpus_tokens.pkl"
     with open(tokens_path, "wb") as file:
@@ -61,7 +53,6 @@ def main():
     print(f"Artifacts saved in  : {BM25_FULL_DIR}")
     print("=" * 55)
     print()
-    print("الخطوة التالية: شغّلي الواجهة وستجدين BM25 Tunable جاهزاً.")
 
 
 if __name__ == "__main__":

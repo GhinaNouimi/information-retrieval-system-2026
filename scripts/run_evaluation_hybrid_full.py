@@ -1,8 +1,4 @@
-"""
-تقييم نموذجي Hybrid Full على كامل الـ 522,931 وثيقة:
-- Hybrid Serial Full   (BM25 Full → Embedding reranking)
-- Hybrid Parallel Full (BM25 Full + Embedding Full → RRF)
-"""
+
 from services.evaluation_service.evaluator import evaluate
 from services.retrieval_service.strategies.hybrid_serial_full_v2_strategy import HybridSerialFullV2RetrievalStrategy
 from services.retrieval_service.strategies.hybrid_parallel_full_strategy import HybridParallelFullRetrievalStrategy
@@ -26,7 +22,6 @@ def main():
     print("=" * 55)
     print()
 
-    # تحميل النموذجين
     print("[1/2] Loading Hybrid Serial Full...")
     serial = HybridSerialFullV2RetrievalStrategy()
     print()
@@ -38,21 +33,17 @@ def main():
     print("Both strategies loaded. Starting evaluation...")
     print()
 
-    # تقييم Hybrid Serial Full
     print("Evaluating Hybrid Serial Full...")
     print("(قد يأخذ وقتاً — BM25 يبحث في 522K ثم Embedding يعيد الترتيب)")
     print()
     serial_results = evaluate(serial, top_k=10)
     print_results("Hybrid Serial Full (522K)", serial_results)
 
-    # تقييم Hybrid Parallel Full
     print("Evaluating Hybrid Parallel Full...")
     print("(قد يأخذ وقتاً — كلا النموذجين يبحثان في 522K)")
     print()
     parallel_results = evaluate(parallel, top_k=10)
     print_results("Hybrid Parallel Full (522K)", parallel_results)
-
-    # جدول المقارنة النهائي الكامل
     print()
     print("=" * 75)
     print("   Final Comparison: All Models")

@@ -58,8 +58,7 @@ def main():
     print("Building FAISS index...")
     dimension = embeddings.shape[1]
 
-    # نستخدم IndexFlatIP للبحث بـ Cosine Similarity
-    # نحوّل المتجهات أولاً لتكون normalized
+  
     faiss.normalize_L2(embeddings)
     index = faiss.IndexFlatIP(dimension)
     index.add(embeddings)

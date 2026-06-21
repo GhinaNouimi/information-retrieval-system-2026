@@ -50,7 +50,6 @@ def main():
     emb_full_results = evaluate(emb_full)
     print_results("Embedding Full - 522,931 docs", emb_full_results)
 
-    # جدول المقارنة النهائي
     print("=" * 75)
     print("Final Comparison: All Models on Full Dataset")
     print("=" * 75)

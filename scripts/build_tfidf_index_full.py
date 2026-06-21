@@ -12,9 +12,9 @@ TFIDF_FULL_DIR = ARTIFACTS_DIR / "tfidf_full"
 TFIDF_FULL_DIR.mkdir(parents=True, exist_ok=True)
 
 FULL_SIZE    = 522_931
-MAX_FEATURES = 10_000    # قلّلنا من 50K إلى 30K لتوفير الذاكرة
-BATCH_SIZE   = 2_000     # دفعات أصغر
-NLIST        = 50       # عدد الـ clusters في IVF
+MAX_FEATURES = 10_000    
+BATCH_SIZE   = 2_000    
+NLIST        = 50     
 
 
 def main():
@@ -35,7 +35,6 @@ def main():
     print(f"Documents loaded: {len(doc_ids):,}")
     print()
 
-    # الخطوة 1: بناء TF-IDF Vectorizer
     print(f"Building TF-IDF vectorizer (max_features={MAX_FEATURES:,})...")
     vectorizer = TfidfVectorizer(
         lowercase=True,
@@ -50,14 +49,12 @@ def main():
     print(f"Vocabulary size: {len(vectorizer.vocabulary_):,}")
     print()
 
-    # الخطوة 2: بناء training sample لـ IVF
     print("Preparing training sample for FAISS IVF...")
     train_size   = min(50_000, len(doc_texts))
     train_texts  = doc_texts[:train_size]
     train_matrix = vectorizer.transform(train_texts).toarray().astype(np.float32)
     faiss.normalize_L2(train_matrix)
 
-    # بناء IVF index
     dimension  = MAX_FEATURES
     quantizer  = faiss.IndexFlatIP(dimension)
     index      = faiss.IndexIVFFlat(quantizer, dimension, NLIST, faiss.METRIC_INNER_PRODUCT)
@@ -67,7 +64,6 @@ def main():
     print("Training complete.")
     print()
 
-    # الخطوة 3: إضافة الوثائق دفعة دفعة
     print("Adding documents to FAISS index in batches...")
     total_batches = (len(doc_texts) + BATCH_SIZE - 1) // BATCH_SIZE
 
@@ -88,7 +84,6 @@ def main():
     print(f"FAISS index built. Total vectors: {index.ntotal:,}")
     print()
 
-    # الخطوة 4: حفظ الـ artifacts
     print("Saving artifacts...")
 
     index.nprobe = 10

@@ -3,9 +3,7 @@ from services.retrieval_service.strategies.bm25_large_strategy import BM25LargeR
 
 
 def demo_refinement_only():
-    """
-    يعرض تأثير Query Refinement على الاستعلام فقط بدون بحث.
-    """
+   
     queries = [
         "investng in stokc market",
         "how to lose wieght fast",
@@ -27,9 +25,7 @@ def demo_refinement_only():
 
 
 def demo_refinement_with_search():
-    """
-    يقارن نتائج البحث قبل وبعد Query Refinement.
-    """
+   
     query = "investng in stokc market"
 
     print()

@@ -1,7 +1,4 @@
-"""
-تقييم نموذج TF-IDF Full v2 (Sparse Matrix بدون FAISS)
-على كامل الـ 522,931 وثيقة
-"""
+
 from services.evaluation_service.evaluator import evaluate
 from services.retrieval_service.strategies.tfidf_full_v2_strategy import TfidfFullV2RetrievalStrategy
 
@@ -12,19 +9,16 @@ def main():
     print("=" * 55)
     print()
 
-    # تحميل النموذج
     print("Loading strategy...")
     strategy = TfidfFullV2RetrievalStrategy()
     print()
 
-    # تشغيل التقييم
     print("Starting evaluation on 10,000 queries...")
     print("(هذا قد يأخذ بعض الوقت — كل استعلام يبحث في 522K وثيقة)")
     print()
 
     results = evaluate(strategy, top_k=10)
 
-    # عرض النتائج
     print()
     print("=" * 55)
     print("   Results: TF-IDF Full v2")
@@ -36,7 +30,6 @@ def main():
     print(f"  nDCG@10           : {results['ndcg_at_k']:.4f}")
     print("=" * 55)
 
-    # مقارنة سريعة مع النماذج الأخرى للسياق
     print()
     print("مقارنة مع النماذج الأخرى:")
     print(f"  {'النموذج':<25} {'P@10':>6} {'Recall':>8} {'MAP':>8} {'nDCG@10':>9}")
