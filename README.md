@@ -369,6 +369,5 @@ python services/retrieval_service/search_hybrid_parallel_full.py
 
 ---
 
-# الفريق
 
-تم تطوير المشروع ضمن مقرر Information Retrieval 2026، ويغطي المراحل الأساسية والمتقدمة لبناء محرك بحث متكامل بدءاً من معالجة البيانات وحتى تقييم النماذج واسترجاع النتائج.
+
